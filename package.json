@@ -1,0 +1,24 @@
+{
+	"name": "aaf-maker",
+	"version": "1.0.0",
+	"description": "This project makes it easier for Lasallian student athletes to create AAFs (approved absence forms).",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JSintos/AAF-Maker.git"
+	},
+	"author": "Joshua Sintos",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/JSintos/AAF-Maker/issues"
+	},
+	"homepage": "https://github.com/JSintos/AAF-Maker#readme",
+	"dependencies": {
+		"ejs": "^3.1.8",
+		"express": "^4.18.1",
+		"moment": "^2.29.4"
+	}
+}
