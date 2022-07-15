@@ -2,11 +2,10 @@
 import express from "express";
 import _path from "path";
 
-const app = express();
-const router = express.Router();
-
 // Routes
-const api = require("./dist/routes/api.js")(router);
+import apiRoutes from "./routes/api";
+
+const app = express();
 
 // Middlewares
 app.use(express.json());
@@ -21,6 +20,6 @@ app.set("views", _path.join(__dirname, "/public/app/views"));
 app.use(express.static(_path.join(__dirname, "public")));
 
 // / route -> API.js
-app.use("/", api);
+app.use("/", apiRoutes);
 
 app.listen(3000, () => console.log("AAF Maker has started on port 3000"));
