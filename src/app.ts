@@ -13,11 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Sets the view engine to ejs
 app.set("view engine", "ejs");
-// Sets the default location of the views to the directory below
-app.set("views", _path.join(__dirname, "/public/app/views"));
-
 // Serves the static files in the public directory
-app.use(express.static(_path.join(__dirname, "public")));
+app.use(express.static(_path.join(__dirname, "/../public")));
+// Sets the default location of the views to the directory below
+app.set("views", _path.join(__dirname, "/../public/app/views"));
 
 // / route -> API.js
 app.use("/", apiRoutes);
