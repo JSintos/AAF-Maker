@@ -1,4 +1,4 @@
 node_modules/
 dist/
-public/*.docx
-!public/Template.docx
+public/assets/*.docx
+!public/assets/Template.docx

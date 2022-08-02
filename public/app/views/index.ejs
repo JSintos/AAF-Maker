@@ -6,8 +6,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+		<!-- TODO: Add Webpack and integrate Bootstrap with it -->
 		<link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
 		<script src="/assets/js/bootstrap.min.js"></script>
+
+		<script defer src="/index.js"></script>
 
 		<link href="/assets/css/index.css" rel="stylesheet" />
 
@@ -18,12 +21,123 @@
 		<div class="container px-5 pb-5">
 			<div class="text-center pt-5">
 				<h1>AAF Maker</h1>
-				<!-- TODO: Add a help modal -->
+				<small>
+					<a data-bs-target="#helpModal" data-bs-toggle="modal" href="">Need help?</a>
+				</small>
+
+				<div
+					aria-hidden="true"
+					aria-labelledby="helpModalLabel"
+					class="modal fade"
+					id="helpModal"
+					tabindex="-1"
+				>
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="helpModalLabel">Help</h5>
+
+								<button
+									aria-label="Close"
+									data-bs-dismiss="modal"
+									class="btn-close"
+									type="button"
+								></button>
+							</div>
+
+							<div class="modal-body">
+								<div class="accordion" id="helpModalAccordion">
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="questionOne">
+											<button
+												aria-controls="answerOne"
+												aria-expanded="true"
+												class="accordion-button"
+												data-bs-target="#answerOne"
+												data-bs-toggle="collapse"
+												type="button"
+											>
+												Why are the values in my AAF file missing?
+											</button>
+										</h2>
+
+										<div
+											aria-labelledby="questionOne"
+											data-bs-parent="#helpModalAccordion"
+											class="accordion-collapse collapse"
+											id="answerOne"
+										>
+											<p class="text-start m-3">
+												It's because you have missing fields in the form.
+											</p>
+										</div>
+									</div>
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="questionTwo">
+											<button
+												aria-controls="answerTwo"
+												aria-expanded="true"
+												class="accordion-button"
+												data-bs-target="#answerTwo"
+												data-bs-toggle="collapse"
+												type="button"
+											>
+												I think I found an error that's not supposed to be there.
+											</button>
+										</h2>
+
+										<div
+											aria-labelledby="questionTwo"
+											data-bs-parent="#helpModalAccordion"
+											class="accordion-collapse collapse"
+											id="answerTwo"
+										>
+											<p class="text-start m-3">
+												Kindly email me at sintosjm@gmail.com and concisely explain the error
+												that you saw.
+											</p>
+										</div>
+									</div>
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="questionThree">
+											<button
+												aria-controls="answerThree"
+												aria-expanded="true"
+												class="accordion-button"
+												data-bs-target="#answerThree"
+												data-bs-toggle="collapse"
+												type="button"
+											>
+												Who made this?
+											</button>
+										</h2>
+
+										<div
+											aria-labelledby="questionThree"
+											data-bs-parent="#helpModalAccordion"
+											class="accordion-collapse collapse"
+											id="answerThree"
+										>
+											<p class="text-start m-3">
+												<a href="https://twitter.com/isthatsintos" target="_blank"
+													>@isthatsintos.</a
+												>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="px-5">
 				<form action="/document" method="POST">
-					<!-- TODO: Change selected date to current time -->
 					<h3>Date of Submission</h3>
 					<hr />
 					<div class="row">
@@ -171,9 +285,11 @@
 							<input
 								class="form-control"
 								id="numberOfAbsences"
+								min="0"
 								name="class[numberOfAbsences]"
 								placeholder="No. of absences"
 								type="number"
+								value="0"
 							/>
 						</div>
 
@@ -368,17 +484,16 @@
 						</div>
 
 						<div class="col">
-							<label class="form-label" for="eventVenu">Name</label>
+							<label class="form-label" for="eventVenue">Name</label>
 							<input
 								class="form-control"
-								id="eventVenu"
+								id="eventVenue"
 								name="event[venue]"
 								placeholder="Event Venue"
 								type="text"
 							/>
 						</div>
 
-						<!-- TODO: Change calltime's placeholder to current time -->
 						<div class="col-1">
 							<label class="form-label" for="calltime">Calltime</label>
 							<input
@@ -396,7 +511,7 @@
 								<input
 									checked
 									class="form-check-input"
-									id="toAM"
+									id="calltimeAM"
 									name="event[meridiem]"
 									type="radio"
 									value="AM"
@@ -406,7 +521,7 @@
 							<div class="form-check">
 								<input
 									class="form-check-input"
-									id="toPM"
+									id="calltimePM"
 									name="event[meridiem]"
 									type="radio"
 									value="PM"
@@ -455,9 +570,56 @@
 						</div>
 
 						<div class="btn-group col-2" role="group">
-							<!-- TODO: Add a confirm modal when a user clicks on the 'Reset' button -->
-							<button class="btn btn-danger" id="resetButton" type="button">Reset</button>
+							<button
+								class="btn btn-danger"
+								data-bs-target="#confirmResetModal"
+								data-bs-toggle="modal"
+								id="resetButton"
+								type="button"
+							>
+								Reset
+							</button>
 							<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
+
+							<div
+								aria-hidden="true"
+								aria-labelledby="confirmResetModalLabel"
+								class="modal fade"
+								id="confirmResetModal"
+								tabindex="-1"
+							>
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="confirmResetModalLabel">Confirm reset.</h5>
+
+											<button
+												aria-label="Close"
+												data-bs-dismiss="modal"
+												class="btn-close"
+												type="button"
+											></button>
+										</div>
+
+										<div class="modal-body">
+											<p>Are you sure you want to reset the data you inputted?</p>
+										</div>
+
+										<div class="modal-footer">
+											<button class="btn btn-warning" type="button" id="yesOption">Yes</button>
+
+											<button
+												class="btn btn-secondary"
+												data-bs-dismiss="modal"
+												id="noOption"
+												type="button"
+											>
+												No
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</form>
