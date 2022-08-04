@@ -54,6 +54,9 @@ function setDateFields() {
 	const eventDate = document.getElementById("eventDate") as HTMLInputElement;
 	eventDate.value = "" + dateObject.getDate();
 
+	const dosYear = document.getElementById("dosYear") as HTMLInputElement;
+	dosYear.value = "" + dateObject.getFullYear();
+
 	const eventYear = document.getElementById("eventYear") as HTMLInputElement;
 	eventYear.value = "" + dateObject.getFullYear();
 }
@@ -64,10 +67,12 @@ const resetButton = document.getElementById("yesOption") as HTMLButtonElement;
 resetButton.addEventListener("click", () => {
 	setDateFields();
 
+	// Gets all input elements except the "Date of Submission" date fields, the "Event" date fields, the number fields, the radio buttons, and the checkboxes
 	const inputElements = document.querySelectorAll(
-		"input:not(#dosDate):not(#dosYear):not(#numberOfAbsences):not(input[type='checkbox']):not(#eventDate):not(#eventYear)"
+		"input:not(#dosDate):not(#dosYear):not(input[type='number']):not(input[type='radio']):not(input[type='checkbox']):not(#eventDate):not(#eventYear)"
 	);
 
+	// And resets their value
 	inputElements.forEach((inputElement) => {
 		(inputElement as HTMLInputElement).value = "";
 	});
@@ -92,6 +97,7 @@ resetButton.addEventListener("click", () => {
 	const calltimeAM = document.getElementById("calltimeAM") as HTMLInputElement;
 	calltimeAM.checked = true;
 
+	// Closes the dialog after
 	const noOption = document.getElementById("noOption") as HTMLButtonElement;
 	noOption.click();
 });

@@ -516,7 +516,7 @@
 									type="radio"
 									value="AM"
 								/>
-								<label class="form-check-label" for="toAM">AM</label>
+								<label class="form-check-label" for="calltimeAM">AM</label>
 							</div>
 							<div class="form-check">
 								<input
@@ -526,7 +526,7 @@
 									type="radio"
 									value="PM"
 								/>
-								<label class="form-check-label" for="toPM">PM</label>
+								<label class="form-check-label" for="calltimePM">PM</label>
 							</div>
 						</div>
 					</div>
@@ -579,6 +579,7 @@
 							>
 								Reset
 							</button>
+							<!-- TODO: Add a dialog after submitting the form -->
 							<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
 
 							<div
@@ -615,6 +616,47 @@
 												type="button"
 											>
 												No
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div
+								aria-hidden="true"
+								aria-labelledby="submitModalLabel"
+								class="modal fade"
+								id="submitModal"
+								tabindex="-1"
+							>
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="submitModalLabel">Confirm reset.</h5>
+
+											<button
+												aria-label="Close"
+												data-bs-dismiss="modal"
+												class="btn-close"
+												type="button"
+											></button>
+										</div>
+
+										<div class="modal-body">
+											<p>
+												Your file has been downloaded. Do double check if the information is
+												accurate and correct.
+											</p>
+										</div>
+
+										<div class="modal-footer">
+											<button
+												class="btn btn-secondary"
+												data-bs-dismiss="modal"
+												id="closeButton"
+												type="button"
+											>
+												Close
 											</button>
 										</div>
 									</div>

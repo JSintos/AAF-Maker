@@ -36,6 +36,17 @@ function cleanUserInput(req: Request) {
 		meridiem: string;
 	};
 	const notee = req.body.notee as { name: string; title: string };
+	const renameFile = req.body.renameFile as string;
+
+	let preferredPronouns = "";
+
+	if (student.gender == "Male") {
+		preferredPronouns = "He is";
+	} else if (student.gender == "Female") {
+		preferredPronouns = "She is";
+	} else {
+		preferredPronouns = "They are";
+	}
 
 	let classSchedule = "";
 
@@ -96,7 +107,7 @@ function cleanUserInput(req: Request) {
 		professorName: professor.name,
 		professorDepartment: professor.department,
 		studentName: student.name,
-		studentGender: student.gender,
+		studentGender: preferredPronouns,
 		courseCode: classDetails.courseCode,
 		section: classDetails.section,
 		classSchedule: classSchedule,
@@ -104,14 +115,20 @@ function cleanUserInput(req: Request) {
 		eventMonth: event.month,
 		eventDate: Number(event.date),
 		eventYear: Number(event.year),
+		eventName: event.name,
 		eventDay: eventDay,
 		eventVenue: event.venue,
 		eventCalltime: `${event.calltime} ${event.meridiem}`,
 		absences: Number(classDetails.numberOfAbsences),
 		team: student.team,
+		title: student.title || "",
 		noteeName: notee.name,
 		noteeTitle: notee.title,
 	};
+
+	if (renameFile) {
+		returnData.renameFile = renameFile;
+	}
 
 	return returnData;
 }
@@ -134,18 +151,59 @@ router.post("/document", function (req, res) {
 	const zippedTemplate = new PizZip(templateFile);
 
 	const document = new Docxtemplater(zippedTemplate, { linebreaks: true });
+
 	// Render the document along with the necessary information
-	document.render({});
+	document.render({
+		Current_Month: cleanedData.currentMonth,
+		Current_Date: cleanedData.currentDate,
+		Current_Year: cleanedData.currentYear,
+		Professor_Name: cleanedData.professorName,
+		Professor_Department: cleanedData.professorDepartment,
+		Student_Name: cleanedData.studentName,
+		Course_Code: cleanedData.courseCode,
+		Section: cleanedData.section,
+		Days: cleanedData.classSchedule,
+		Time: cleanedData.time,
+		Event_Month: cleanedData.eventMonth,
+		Event_Date: cleanedData.eventDate,
+		Event_Year: cleanedData.eventYear,
+		Gender: cleanedData.studentGender,
+		Team: cleanedData.team,
+		Assigned_Event: cleanedData.eventName,
+		Event_Day: cleanedData.eventDay,
+		Event_Venue: cleanedData.eventVenue,
+		Event_Calltime: cleanedData.eventCalltime,
+		Absences: cleanedData.absences,
+		Title: cleanedData.title,
+		Notee: cleanedData.noteeName,
+		Notee_Title: cleanedData.noteeTitle,
+	});
 
 	const buffer = document.getZip().generate({
 		type: "nodebuffer",
 		compression: "DEFLATE",
 	});
 
-	fs.writeFileSync(_path.resolve(__dirname, "../../public/assets/AAF.docx"), buffer);
+	let filePath = "";
 
-	// TODO: Check if the user wants to rename the file
-	// res.download(_path.resolve(__dirname, "../../public/assets/AAF.docx"));
+	// Checks if the user wants to rename the file
+	if (cleanedData.renameFile) {
+		filePath = `../../public/assets/${cleanedData.renameFile}.docx`;
+	} else {
+		filePath = `../../public/assets/AAF.docx`;
+	}
+
+	// Checks if the file exists
+	if (fs.existsSync(_path.resolve(__dirname, filePath))) {
+		// If it does, delete it first
+		fs.unlinkSync(_path.resolve(__dirname, filePath));
+	}
+
+	// Generates the file
+	fs.writeFileSync(_path.resolve(__dirname, filePath), buffer);
+
+	// Downloads the file
+	res.download(_path.resolve(__dirname, filePath));
 });
 
 export default router;

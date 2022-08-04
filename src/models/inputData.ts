@@ -13,12 +13,14 @@ export interface inputData {
 	eventMonth: string;
 	eventDate: number;
 	eventYear: number;
+	eventName: string;
 	eventDay: string;
 	eventVenue: string;
 	eventCalltime: string;
 	absences: number;
 	team: string;
-	title?: string;
+	title: string;
 	noteeName: string;
 	noteeTitle: string;
+	renameFile?: string;
 }
