@@ -1,7 +1,7 @@
 <h1 align="center">
     AAF Maker
-    <br>
-    <img alt="AAF Maker above the fold" height="300" width="300" src="https://github.com/JSintos/AAF-Maker/blob/master/screenshot.png?raw=true">
+    <br><br>
+    <img alt="AAF Maker screenshot" height="300" src="https://github.com/JSintos/AAF-Maker/blob/master/screenshot.png?raw=true">
 </h1>
 
 This project makes it easier for Lasallian student athletes to create AAFs (approved absence forms). AAFs, in a gist, are documents that student athletes submit to the Office of Sports Development to be excused in their classes to attend events organized by their sport.
