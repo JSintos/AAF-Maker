@@ -1,11 +1,14 @@
 import { inputData } from "../models/inputData";
 
 import { Router, Request } from "express";
+import multer from "multer";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 
 import fs from "fs";
 import _path from "path";
+
+const upload = multer();
 
 function cleanUserInput(req: Request) {
 	const dateOfSubmission = req.body.dateOfSubmission as { month: string; date: string; year: string };
@@ -39,7 +42,6 @@ function cleanUserInput(req: Request) {
 	const renameFile = req.body.renameFile as string;
 
 	let preferredPronouns = "";
-
 	if (student.gender == "Male") {
 		preferredPronouns = "He is";
 	} else if (student.gender == "Female") {
@@ -49,34 +51,27 @@ function cleanUserInput(req: Request) {
 	}
 
 	let classSchedule = "";
-
 	if (classDetails.mondaySchedule) {
 		classSchedule += "M";
 	}
-
 	if (classDetails.tuesdaySchedule) {
 		classSchedule += "T";
 	}
-
 	if (classDetails.wednesdaySchedule) {
 		classSchedule += "W";
 	}
-
 	if (classDetails.thursdaySchedule) {
 		classSchedule += "H";
 	}
-
 	if (classDetails.fridaySchedule) {
 		classSchedule += "F";
 	}
-
 	if (classDetails.saturdaySchedule) {
 		classSchedule += "S";
 	}
 
 	let eventDay = "";
 	const eventDate = new Date(`${event.month} ${event.date} ${event.year}`);
-
 	switch (eventDate.getDay()) {
 		case 0:
 			eventDay = "Sunday";
@@ -139,11 +134,9 @@ router.get("/", function (req, res) {
 	res.render("index");
 });
 
-router.post("/document", function (req, res) {
+router.post("/document", upload.none(), function (req, res) {
 	// TODO: Validate, sanitize, and clean input
 	const cleanedData = cleanUserInput(req);
-
-	console.log(cleanedData);
 
 	// Load the docx file as binary content
 	const templateFile = fs.readFileSync(_path.resolve(__dirname, "../../public/assets/Template.docx"), "binary");
@@ -203,7 +196,11 @@ router.post("/document", function (req, res) {
 	fs.writeFileSync(_path.resolve(__dirname, filePath), buffer);
 
 	// Downloads the file
-	res.download(_path.resolve(__dirname, filePath));
+	res.download(_path.resolve(__dirname, filePath), (err) => {
+		if (err) {
+			console.log(err);
+		}
+	});
 });
 
 export default router;

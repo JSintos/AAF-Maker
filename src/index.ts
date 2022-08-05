@@ -101,3 +101,15 @@ resetButton.addEventListener("click", () => {
 	const noOption = document.getElementById("noOption") as HTMLButtonElement;
 	noOption.click();
 });
+
+const aafForm = document.getElementById("aafForm") as HTMLFormElement;
+aafForm.addEventListener("submit", (event) => {
+	event.preventDefault();
+
+	fetch("/document", {
+		method: "POST",
+		body: new FormData(aafForm),
+	}).then((response) => {
+		console.log(response);
+	});
+});

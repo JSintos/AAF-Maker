@@ -6,7 +6,7 @@
 
 This project makes it easier for Lasallian student athletes to create AAFs (approved absence forms). AAFs, in a gist, are documents that student athletes submit to the Office of Sports Development to be excused in their classes to attend events organized by their sport.
 
-This project was built with love using Node, Express, Typescript, and Docxtemplater.
+This project was built with love using Node, Express, Typescript, Multer, and Docxtemplater.
 
 ## How it works
 
