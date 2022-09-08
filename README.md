@@ -6,7 +6,7 @@
 
 This project makes it easier for Lasallian student athletes to create AAFs (approved absence forms). AAFs, in a gist, are documents that student athletes submit to the Office of Sports Development to be excused in their classes to attend events organized by their sport.
 
-This project was built with love using Node, Express, Typescript, and Docxtemplater.
+This project was built with love using Bootstrap, Node, Express, TypeScript, Multer, and Docxtemplater.
 
 ## How it works
 
@@ -18,3 +18,35 @@ After form submission, the backend, created using an Express router, collects th
 -   You may rename the file by inputting the new file name in the input field next to the 'Reset' button.
 -   After you're done and content with the inputted information, press the 'Submit' button and the file should be downloaded to your machine.
 -   **Make sure to double check the file after receiving it.**
+
+## Installation
+
+1. Clone the repository.
+
+```
+git clone https://github.com/JSintos/AAF-Maker.git
+```
+
+2. Install the dependencies
+
+```
+npm install
+```
+
+3. Build the TypeScript files.
+
+```
+tsc
+```
+
+4. Run the server. Do note the server runs on port 3000. This can be changed by editing the port number inside `./src/app.ts`.
+
+```
+node ./dist/app.js
+```
+
+`npm start` is also an option if you have [nodemon](https://nodemon.io/) installed.
+
+## Future milestones
+
+-   Add presets for student athletes (i.e. a preset for student athletes playing basketball or volleyball or doing cheerleading)
