@@ -39,7 +39,7 @@ npm install
 tsc
 ```
 
-4. Run the server. Do note the server runs on port 3000. This can be changed by editing the port number inside `./src/app.ts`.
+4. Run the server. Do note that the server runs on port 3000. This can be changed by editing the port number inside `./src/app.ts`.
 
 ```
 node ./dist/app.js
