@@ -1,3 +1,4 @@
+// TODO: Divide the code into different files for better code management
 import { inputData } from "../models/inputData";
 
 import { Router, Request } from "express";
@@ -9,6 +10,39 @@ import fs from "fs";
 import _path from "path";
 
 const upload = multer();
+
+function setPronouns(gender: string) {
+	let returnString = "";
+
+	if (gender === "Male") {
+		returnString = "He is";
+	} else {
+		gender === "Female" ? (returnString = "She is") : (returnString = "They are");
+	}
+
+	return returnString;
+}
+
+function determineEventDay(eventDate: number) {
+	switch (eventDate) {
+		case 0:
+			return "Sunday";
+		case 1:
+			return "Monday";
+		case 2:
+			return "Tuesday";
+		case 3:
+			return "Wednesday";
+		case 4:
+			return "Thursday";
+		case 5:
+			return "Friday";
+		case 6:
+			return "Saturday";
+	}
+
+	return "";
+}
 
 function cleanUserInput(req: Request) {
 	const dateOfSubmission = req.body.dateOfSubmission as { month: string; date: string; year: string };
@@ -41,14 +75,7 @@ function cleanUserInput(req: Request) {
 	const notee = req.body.notee as { name: string; title: string };
 	const renameFile = req.body.renameFile as string;
 
-	let preferredPronouns = "";
-	if (student.gender == "Male") {
-		preferredPronouns = "He is";
-	} else if (student.gender == "Female") {
-		preferredPronouns = "She is";
-	} else {
-		preferredPronouns = "They are";
-	}
+	let preferredPronouns = setPronouns(student.gender);
 
 	let classSchedule = "";
 	if (classDetails.mondaySchedule) {
@@ -70,30 +97,8 @@ function cleanUserInput(req: Request) {
 		classSchedule += "S";
 	}
 
-	let eventDay = "";
 	const eventDate = new Date(`${event.month} ${event.date} ${event.year}`);
-	switch (eventDate.getDay()) {
-		case 0:
-			eventDay = "Sunday";
-			break;
-		case 1:
-			eventDay = "Monday";
-			break;
-		case 2:
-			eventDay = "Tuesday";
-			break;
-		case 3:
-			eventDay = "Wednesday";
-			break;
-		case 4:
-			eventDay = "Thursday";
-			break;
-		case 5:
-			eventDay = "Friday";
-			break;
-		case 6:
-			eventDay = "Saturday";
-	}
+	let eventDay = determineEventDay(eventDate.getDay());
 
 	const returnData: inputData = {
 		currentMonth: dateOfSubmission.month,
@@ -180,6 +185,7 @@ router.post("/document", upload.none(), function (req, res) {
 	let filePath = "";
 
 	// Checks if the user wants to rename the file
+	// TODO: Prohibit the user to renaming the file to "Template"
 	if (cleanedData.renameFile) {
 		filePath = `../../public/assets/${cleanedData.renameFile}.docx`;
 	} else {
@@ -195,6 +201,7 @@ router.post("/document", upload.none(), function (req, res) {
 	// Generates the file
 	fs.writeFileSync(_path.resolve(__dirname, filePath), buffer);
 
+	// TODO: Fix the file download part and send a response to the fetch call on index.ts
 	// Downloads the file
 	res.download(_path.resolve(__dirname, filePath), (err) => {
 		if (err) {

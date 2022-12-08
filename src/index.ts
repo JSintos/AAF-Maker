@@ -102,14 +102,27 @@ resetButton.addEventListener("click", () => {
 	noOption.click();
 });
 
-const aafForm = document.getElementById("aafForm") as HTMLFormElement;
-aafForm.addEventListener("submit", (event) => {
+const submitButton = document.getElementById("submitButton") as HTMLButtonElement;
+submitButton.addEventListener("click", async (event) => {
 	event.preventDefault();
 
-	fetch("/document", {
-		method: "POST",
-		body: new FormData(aafForm),
-	}).then((response) => {
-		console.log(response);
-	});
+	const aafForm = document.getElementById("aafForm") as HTMLFormElement;
+
+	// try {
+	// 	const filename = (document.getElementById("renameFile") as HTMLInputElement).value;
+
+	// 	const data = await axios.get(`/document`, {
+	// 		responseType: "blob",
+	// 	});
+
+	// 	const url = window.URL.createObjectURL(new Blob([data.data]));
+
+	// 	const aTag = document.createElement("a");
+	// 	aTag.href = url;
+	// 	aTag.setAttribute("download", filename);
+	// 	document.body.appendChild(aTag);
+	// 	aTag.click();
+	// } catch (error) {
+	// 	console.log(error);
+	// }
 });
